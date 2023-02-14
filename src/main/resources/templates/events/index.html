@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="eng" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head"></head>
+<body class="container">
+    <nav th:replace="fragments :: navigation"></nav>
+    <h1>See all the Events Below</h1>
+
+    <p th:unless="${events} and ${events.size()}">No current events, please add a new event.</p>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Contact Email</th>
+    </tr>
+    </thead>
+        <tr th:each="event : ${events}">
+            <td th:text="${event.id}"></td>
+            <td th:text="${event.name}"></td>
+            <td th:text="${event.description}"></td>
+            <td th:text="${event.contactEmail}"></td>
+        </tr>
+
+</table>
+
+    <button><a href="/events/create">Create a New Event</a></button>
+</body>
+</html>
