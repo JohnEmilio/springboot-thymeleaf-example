@@ -1,31 +1,39 @@
 package app.johnemilio.codingevents.models;
 
-import jakarta.validation.constraints.Email;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public class Event {
 
-    @NotBlank
+@Entity
+public class Event extends AbstractEntity {
+
+    @NotBlank(message = "Name is required")
     @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
     private String name;
 
-    @Size(max = 500, message = "Description too long")
-    private String description;
+    @OneToOne(cascade = CascadeType.ALL)
+    @Valid
+    @NotNull
+    private EventDetails eventDetails;
 
-    @Email(message = "Invalid email. Try again.")
-    private String contactEmail;
+    @ManyToOne
+    @NotNull(message = "Category is required.")
+    private EventCategory eventCategory;
 
-    private int id;
-    private static int nextId = 1;
-
-    public Event(String name, String description, String contactEmail) {
+    public Event(String name, String description, String contactEmail, EventCategory eventCategory) {
         this.name = name;
-        this.description = description;
-        this.contactEmail = contactEmail;
-        this.id = nextId;
-        nextId++;
+        this.eventCategory = eventCategory;
     }
+
+
+
+    public Event(){}
 
     public String getName() {
         return name;
@@ -35,24 +43,20 @@ public class Event {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public EventCategory getEventCategory() {
+        return eventCategory;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setEventCategory(EventCategory eventCategory) {
+        this.eventCategory = eventCategory;
     }
 
-    public String getContactEmail() {
-        return contactEmail;
+    public EventDetails getEventDetails() {
+        return eventDetails;
     }
 
-    public void setContactEmail(String contactEmail) {
-        this.contactEmail = contactEmail;
-    }
-
-    public int getId() {
-        return id;
+    public void setEventDetails(EventDetails eventDetails) {
+        this.eventDetails = eventDetails;
     }
 
     @Override
@@ -60,18 +64,5 @@ public class Event {
         return name;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        Event event = (Event) o;
-
-        return id == event.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return id;
-    }
 }

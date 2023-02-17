@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="eng" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head"></head>
+<body class="container">
+<header th:replace="fragments :: header"></header>
+<p th:unless="${events} and ${events.size()}">No categories, please add a new category.</p>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Event Categories</th>
+    </tr>
+    </thead>
+    <tr th:each="category : ${categories}">
+        <td><a th:text="${category.name}" th:href="'/events?categoryId=' + ${category.id}"></a></td>
+    </tr>
+</table>
+</body>
+</html>
